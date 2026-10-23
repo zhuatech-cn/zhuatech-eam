@@ -1,0 +1,55 @@
+[
+  {
+    "patch": {},
+    "expected": {
+      "decision": "PASS",
+      "availabilityPct": "#98",
+      "mtbfHours": "#245",
+      "mttrHours": "#5"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "unplannedDowntime": "31"
+    },
+    "expected": {
+      "decision": "REVIEW"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "failures": "0"
+    },
+    "expected": {},
+    "error": true
+  },
+  {
+    "patch": {
+      "failures": "0",
+      "unplannedDowntime": "0"
+    },
+    "expected": {
+      "decision": "PASS",
+      "mtbfHours": "N/A"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "unplannedDowntime": "1001"
+    },
+    "expected": {},
+    "error": true
+  },
+  {
+    "patch": {
+      "unplannedDowntime": "30"
+    },
+    "expected": {
+      "decision": "PASS"
+    },
+    "error": false
+  }
+]
