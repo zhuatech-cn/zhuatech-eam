@@ -1,0 +1,92 @@
+{
+  "slug": "eam",
+  "title": "资产计价与维保日期预检",
+  "fields": [
+    {
+      "key": "asset_no",
+      "label": "资产编号",
+      "type": "ID",
+      "length": 200
+    },
+    {
+      "key": "name",
+      "label": "资产名称",
+      "type": "TEXT",
+      "length": 200
+    },
+    {
+      "key": "cost",
+      "label": "原值",
+      "type": "DECIMAL",
+      "length": 200,
+      "scale": 2
+    },
+    {
+      "key": "residual",
+      "label": "残值",
+      "type": "DECIMAL",
+      "length": 200,
+      "scale": 2
+    },
+    {
+      "key": "last_service",
+      "label": "上次维保",
+      "type": "DATE",
+      "length": 200
+    },
+    {
+      "key": "next_service",
+      "label": "下次维保",
+      "type": "DATE",
+      "length": 200
+    }
+  ],
+  "unique": [
+    [
+      "asset_no"
+    ]
+  ],
+  "rules": [
+    {
+      "op": "LE",
+      "args": [
+        "residual",
+        "cost"
+      ],
+      "code": "RESIDUAL_COST",
+      "message": "残值不得超过原值",
+      "bad": {
+        "residual": "100001"
+      }
+    },
+    {
+      "op": "DATE_LE",
+      "args": [
+        "last_service",
+        "next_service"
+      ],
+      "code": "SERVICE_DATE",
+      "message": "下次维保不得早于上次维保",
+      "bad": {
+        "next_service": "2026-08-01"
+      }
+    },
+    {
+      "op": "EXPIRY",
+      "args": [
+        "next_service"
+      ],
+      "code": "EXPIRY",
+      "message": "维保提醒",
+      "bad": null
+    }
+  ],
+  "sampleCsv": "asset_no,name,cost,residual,last_service,next_service\nAST-001,示例设备,100000,5000,2026-09-01,2026-12-01\n",
+  "limits": {
+    "rows": 500,
+    "bytes": 262144,
+    "columns": 32,
+    "cellCharacters": 4000
+  },
+  "scope": "Read-only batch validation; no persistence, reference-master lookup or full production certification."
+}
